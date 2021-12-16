@@ -13,7 +13,7 @@ var typeListDiv = document.getElementById("typeListDiv");
 
 // Text version of leaderboard
 var leaderboardErrorMsg = document.getElementById("leaderboardErrorMsg");
-var leaderboardText = document.getElementById("leaderboardText");
+var leaderboardTable = document.getElementById("leaderboardTable");
 
 //******************** Helper Functions ********************//
 
@@ -54,6 +54,30 @@ async function fillDataList(type) {
     }
 }
 
+// Function to make the table for a text-version of the leaderboard
+async function buildLeaderboardTable(data) {
+    // Clear table
+    leaderboardTable.innerHTML = "";
+
+    // Build each row on the table
+    data.forEach(el => {
+        let tr = leaderboardTable.insertRow(leaderboardTable.rows.length);
+
+        let head = tr.insertCell(0); 
+        let img = document.createElement("img");
+        img.src = "./media/grass.png";
+        img.style.width = "30px";
+        img.style.height = "30px";
+        head.appendChild(img);
+
+        let name = tr.insertCell(1); 
+        name.innerHTML = el.player;
+
+        let value = tr.insertCell(2); 
+        value.innerHTML = el.value;
+    })
+}
+
 // Helper function to display statistic data
 function displayStatisticsData(data) {
     // Go right to query
@@ -66,12 +90,8 @@ function displayStatisticsData(data) {
         // Sort by value (greatest to least)
         data.sort((a, b) => (a.value < b.value) ? 1 : -1);
 
-        // Display in text form
-        leaderboardText.innerHTML = "";
-        data.forEach(el => {
-            leaderboardText.innerHTML += el.value + " - " + el.player;
-            leaderboardText.appendChild(document.createElement("br"));
-        })
+        // Display in table
+        buildLeaderboardTable(data);
 
         drawBarGraph(data);
     }
@@ -81,8 +101,6 @@ function displayStatisticsData(data) {
 
 // On statisticList dropdown selection
 statisticsList.oninput = async function() {
-    leaderboardText.innerHTML = "";
-
     let stat = JSON.parse(this.value);
     console.log("Statistic " + stat.statistic + " selected!");
 
@@ -98,8 +116,6 @@ statisticsList.oninput = async function() {
 
 // On dataList selection of type param
 typeListInput.onblur = async function() {
-    leaderboardText.innerHTML = "";
-
     // todo check text is in datalist
 
     console.log("Selected " + typeListInput.value + "!");
@@ -115,6 +131,9 @@ typeListInput.onblur = async function() {
 async function loadStatisticsList() {
     var statistics = await basicGetFetch("/getStatisticsList");
     // console.log(statistics);
+
+    // Sort by value (alphabetized)
+    statistics.sort((a, b) => (a.statistic > b.statistic) ? 1 : -1);
     
     if (statistics == null) {
         // Handle if something goes wrong (aka no stats)
@@ -134,8 +153,5 @@ window.addEventListener("load", function() {
     typeListDiv.style.visibility = "hidden";
     loadStatisticsList();
 
-    // Fix URL based on location
-    let tempUrl = window.location.href
-    mainUrl = tempUrl.slice(0, tempUrl.lastIndexOf("/")) + "/api/stats";
-    console.log("API URL: " + mainUrl);
+    fixMainUrl(); // fixme REMEMBER TO UNCOMMENT
 });

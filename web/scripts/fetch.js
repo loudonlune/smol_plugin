@@ -5,10 +5,15 @@
 
 // URL for GET requests
 var mainUrl = 'http://192.168.93.5:6900/api/stats'
-// todo add grab own url
-console.log("url: " + window.location.href);
 
 //******************** Helper Functions ********************//
+
+// Helper function to fix the mainUrl based off of the location
+function fixMainUrl() {
+    let tempUrl = window.location.href
+    mainUrl = tempUrl.slice(0, tempUrl.lastIndexOf("/")) + "/api/stats";
+    console.log("API URL: " + mainUrl);
+}
 
 // Helper function to return endpoint based on type
 function getEndpointFromType(type) {
@@ -65,8 +70,8 @@ async function basicGetFetch(endpoint) {
 // Gets the statistic given only the statistic and no other queries
 async function getUntypedData(stat) {
     return basicFetch(mainUrl + "/getData?" + new URLSearchParams({
-            stat: stat, 
-        }));
+        stat: stat, 
+    }));
 }
 
 // Gets the statistic given a block/item/entity type 

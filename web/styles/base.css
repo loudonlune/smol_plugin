@@ -4,7 +4,30 @@
 /********** Canvas **********/
 
 #myCanvas {
-    border: 2px solid black;
-    background-color: grey;
+    /* background-color: grey; */
+    background-image: url(../media/stone.png);
+    background-size: 80px;
+    background-repeat: tile;
 }
 
+/********** Table **********/
+
+table {
+    width: 320px;
+    margin-left: 160px;
+    margin-top: 80px;
+    margin-bottom: 80px;
+    background-image: url(../media/stone.png);
+    background-size: 80px;
+    background-repeat: tile;
+}
+
+td {
+    padding: 5px;
+    font-size: 16px;
+    font-family: "Comic Sans MS", Arial;
+}
+
+#leaderboardTable img {
+    margin-left: 5px;
+}

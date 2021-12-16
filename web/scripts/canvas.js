@@ -51,8 +51,9 @@ const draw = {
         ctx.drawImage(image, x, y * -1, width, height);
         ctx.scale(1, -1);
     },
+    // todo make this into a Minecraft pixelated heart
     // heart: function(x, y, cube) {
-    //     // DRAW PIXILATED HEART MATCHING STARDEW
+    //     // DRAW PIXELATED HEART MATCHING STARDEW
     //     // Outside #6a0005
     //     draw.rect(x - (cube * 4), y - (cube * 0), cube * 7, cube * 2, "#6a0005");
     //     draw.rect(x - (cube * 3), y - (cube * 1), cube * 2, cube * 4, "#6a0005");
@@ -98,7 +99,7 @@ function drawBarGraph(data) {
 
     // Draw player heads (once for this graph)
     for (let i = 0; i < data.length; i++) {
-        draw.image(35, ((i + 1) * heightInterval), 50, 50, document.getElementById("grassBlock"));
+        draw.image(35, ((i + 1) * heightInterval) - 5, 50, 50, document.getElementById("grassBlock"));
     }
 }
 
@@ -107,7 +108,7 @@ function drawBars() {
     console.log("Drawing bars");
 
     // Erase previous bars area first
-    draw.rect(114, 0, canvas.width, canvas.height, "grey");
+    ctx.clearRect(114, 0, canvas.width, canvas.height);
 
     // Scale so that the largest value fills the screen
     let scale = (canvas.width - 175) / barData[0].value;
@@ -118,7 +119,7 @@ function drawBars() {
     for (let i = 0; i < barData.length; i++) {
         let value = barData[i].value;
 
-        let rectY = canvas.height - ((i + 1) * heightInterval) + 7;
+        let rectY = canvas.height - ((i + 1) * heightInterval) + 10;
 
         // Don't draw if no value
         if (value != 0) {
@@ -131,8 +132,8 @@ function drawBars() {
         }
 
         // Draw player name and value
-        draw.text(130, rectY + 10, "black", "14px 'Comic Sans MS'", "left", barData[i].player);
-        draw.text((canvas.width - 50), rectY + 10, "white", "14px 'Comic Sans MS'", "center", value);
+        draw.text(130, rectY + 9, "black", "16px 'Comic Sans MS'", "left", barData[i].player);
+        draw.text((canvas.width - 40), rectY + 9, "white", "16px 'Comic Sans MS'", "right", value);
     }
 
     // Stop the interval when it's filled

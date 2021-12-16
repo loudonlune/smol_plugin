@@ -5,45 +5,66 @@
 	<link rel="icon" href="./media/grass.png">
 
     <!-- Styles -->
-    <!-- <link href="./styles/page.css" rel="stylesheet"/> -->
+    <link href="./styles/page.css" rel="stylesheet"/>
     <!-- <link href="./styles/sections.css" rel="stylesheet"/> -->
     <link href="./styles/base.css" rel="stylesheet"/>
     <!-- <link href="./styles/misc.css" rel="stylesheet"/> -->
     <!-- <link href="./styles/flip-card.css" rel="stylesheet"/> -->
 </head>
 <body>
-    <h1>MC Stats</h1>
+    <div id="grass"></div>
 
-    <h2>Leaderboards</h2>
+    <div id="page">
+        <div class="tree"></div>
 
-    <p id="leaderboardErrorMsg"></p>
+        <div id="content">
+            <div class="sign">
+                <h1>MC Stats</h1>
+            </div>
 
-    <h3>Select a Statistic:</h3>
-    <select name="statisticsList" id="statisticsList"></select>
-    <!-- idea for later, convert this to a searchable datalist -->
-    <!-- <div id="statisticsListDiv">
-        <input placeholder="Start typing…" list="statisticsList" id="statisticsListInput">
-        <datalist id="statisticsList"></datalist>
-    </div> -->
+            <div class="emptyRow"></div>
 
-    <div id="typeListDiv">
-        <h3>Select a Target:</h3>
-        <input placeholder="Start typing…" list="typeList" id="typeListInput">
-        <datalist id="typeList"></datalist>
+            <div class="sign">
+                <h2>Leaderboards</h2>
+            </div>
+
+            <div class="emptyRow">
+                <p id="leaderboardErrorMsg"></p>
+            </div>
+
+            <div class="sign">
+                <h3>Select a Statistic:</h3>
+            </div>
+            
+            <div class="emptyRow">
+                <select name="statisticsList" id="statisticsList"></select>
+                <!-- idea for later, convert this to a searchable datalist -->
+                <!-- <div id="statisticsListDiv">
+                    <input placeholder="Start typing…" list="statisticsList" id="statisticsListInput">
+                    <datalist id="statisticsList"></datalist>
+                </div> -->
+            </div>
+            
+            <div id="typeListDiv" class="emptyRow">
+                <h3>Select a Target:</h3>
+                <input placeholder="Start typing…" list="typeList" id="typeListInput">
+                <datalist id="typeList"></datalist>
+            </div>
+
+            <canvas id="myCanvas" width="640px" height="640px"></canvas>
+
+            <table id="leaderboardTable"></table>
+        </div>
+        <div class="tree"></div>
+
+
+        <!-- <h2>Player Stats</h2> -->
+        <!-- todo add option to search specific player stats -->
+
+
+        <!-- fixme remove (images for canvas testing) -->
+        <img id="grassBlock" src="./media/grass.png" width="0px" height="0px"/>
     </div>
-
-    <canvas id="myCanvas" width="600px" height="600px"></canvas>
-
-    <p id="leaderboardText"></p>
-    <!-- idea turn this into a table (and display player heads) -->
-
-
-    <!-- <h2>Player Stats</h2> -->
-    <!-- todo add option to search specific player stats -->
-
-
-    <!-- fixme remove (images for canvas testing) -->
-    <img id="grassBlock" src="./media/grass.png" width="0px" height="0px"/>
 
     <!-- Import scripts -->
     <script src="./scripts/canvas.js"></script>
