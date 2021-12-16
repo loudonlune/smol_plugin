@@ -2,6 +2,7 @@ package org.loudonlune.smol_plugin.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 
@@ -15,6 +16,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.thread.ExecutorThreadPool;
+import org.json.simple.JSONObject;
 import org.loudonlune.smol_plugin.SmolPlugin;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -82,6 +84,24 @@ public class WebService {
 		handlerList = new HandlerList();
 		
 		api = new APIHandler();
+		
+		api.getRoot().addMember(new APIEndpoint("version") {
+
+			@Override
+			public int call(HttpServletRequest req, HttpServletResponse resp) {
+				try {
+					PrintWriter pw = resp.getWriter();
+					pw.write(Message.serializeString(Bukkit.getServer().getVersion()));
+					pw.flush();
+				} catch (IOException e) {
+					Bukkit.getLogger().log(Level.SEVERE, e.toString());
+					return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+				}
+				
+				return HttpServletResponse.SC_OK;
+			}
+			
+		});
 		
 		// test end point (for fun)
 		api.getRoot().addMember(new APIEndpoint("broadcast") {
