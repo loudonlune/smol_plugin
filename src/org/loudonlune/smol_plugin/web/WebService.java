@@ -1,11 +1,7 @@
 package org.loudonlune.smol_plugin.web;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 
@@ -25,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import net.lingala.zip4j.ZipFile;
 
 public class WebService {
 	public static final int WEB_PORT = 6900;
@@ -64,8 +61,18 @@ public class WebService {
 				parent.saveResource("staticfiles", false);
 				
 				File staticfiles = new File(parent.getDataFolder(), "staticfiles");
-				staticfiles.renameTo(new File(webRoot, "staticfiles"));
+				File staticfilesDest = new File(webRoot, "staticfiles");
+				staticfiles.renameTo(staticfilesDest);
+				
+				try (ZipFile archive = new ZipFile(staticfilesDest)) {
+					archive.extractAll(webRoot.getAbsolutePath());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				staticfilesDest.delete();
 			} else {
+				Bukkit.getLogger().log(Level.WARNING, "Failed to copy out staticfile, not found in jar.");
 				return;
 			}
 		}
