@@ -1,9 +1,53 @@
-<html>
-	<head>
-		<title>test</title>
-	</head>
-	<body>
-		<h1>Test Page</h1>
-		<p>Testing staticfile deployment</p>
-	</body>
+<!DOCTYPE html>
+<head>
+	<title>MC Stats</title>
+	<meta name="description" content="A website that displays everyone's stats on the Minecraft server.">
+	<link rel="icon" href="./media/grass.png">
+
+    <!-- Styles -->
+    <!-- <link href="./styles/page.css" rel="stylesheet"/> -->
+    <!-- <link href="./styles/sections.css" rel="stylesheet"/> -->
+    <link href="./styles/base.css" rel="stylesheet"/>
+    <!-- <link href="./styles/misc.css" rel="stylesheet"/> -->
+    <!-- <link href="./styles/flip-card.css" rel="stylesheet"/> -->
+</head>
+<body>
+    <h1>MC Stats</h1>
+
+    <h2>Leaderboards</h2>
+
+    <p id="leaderboardErrorMsg"></p>
+
+    <h3>Select a Statistic:</h3>
+    <select name="statisticsList" id="statisticsList"></select>
+    <!-- idea for later, convert this to a searchable datalist -->
+    <!-- <div id="statisticsListDiv">
+        <input placeholder="Start typing…" list="statisticsList" id="statisticsListInput">
+        <datalist id="statisticsList"></datalist>
+    </div> -->
+
+    <div id="typeListDiv">
+        <h3>Select a Target:</h3>
+        <input placeholder="Start typing…" list="typeList" id="typeListInput">
+        <datalist id="typeList"></datalist>
+    </div>
+
+    <canvas id="myCanvas" width="600px" height="600px"></canvas>
+
+    <p id="leaderboardText"></p>
+    <!-- idea turn this into a table (and display player heads) -->
+
+
+    <!-- <h2>Player Stats</h2> -->
+    <!-- todo add option to search specific player stats -->
+
+
+    <!-- fixme remove (images for canvas testing) -->
+    <img id="grassBlock" src="./media/grass.png" width="0px" height="0px"/>
+
+    <!-- Import scripts -->
+    <script src="./scripts/canvas.js"></script>
+    <script src="./scripts/script.js"></script>
+    <script src="./scripts/fetch.js"></script>    
+</body>
 </html>
