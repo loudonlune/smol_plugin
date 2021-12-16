@@ -1,0 +1,88 @@
+name: smol_plugin
+version: 1.16.3
+api-version: 1.16
+description: Very epic plugin.
+
+author: loudonlune
+ 
+main: org.loudonlune.smol_plugin.SmolPlugin
+database: false
+depend: [ NBTAPI ]
+ 
+commands:
+  ents:
+    description: Lists entity types.
+    aliases: [ et ]
+    permission: smol_plugin.ents
+    usage: Should work.
+  tag:
+    description: Configure your chat tags.
+    aliases: [ ]
+    permission: smol_plugin.tag
+    usage: Incorrect usage.
+  openinv:
+    description: Open another user's inventory.
+    aliases: [ ]
+    permission: smol_plugin.openinv
+    usage: This command requires one to three arguments.
+  swapinv:
+    description: Swap inventories with another player.
+    aliases: [ ]
+    permission: smol_plugin.swapinv
+    usage: This command requires 1 to 2 arguments.
+  invutils:
+    description: Inventory utils management command.
+    aliases: [ iu ]
+    permission: smol_plugin.openinv
+    usage: Don't use this command unless you know what you're doing.
+  smolplugin:
+    description: General command.
+    aliases: [ sp ]
+    permission: smol_plugin.general
+    usage: Requires at least 1 argument.
+  bed:
+    description: Teleports a user to their bed.
+    aliases: [ b ]
+    permission: smol_plugin.bed
+    usage: If you are not a player, you must provide at least one argument.
+  stats:
+    description: Prints stat lists, and leaderboards.
+    aliases: [ sts ]
+    permission: smol_plugin.general
+    usage: This command requires at least 1 argument.
+  bar:
+    description: Allows players to manipulate boss bars.
+    aliases: [ ]
+    permission: smol_plugin.bar
+    usage: Unknown subcommand.
+  killall:
+    description: Kills all entities of a given type in either the calling Player's world or a given world.
+    aliases: [ ]
+    permission: smol_plugin.killall
+    usage: This command requires 1 to 2 arguments.
+ 
+permissions:
+  smol_plugin.bed:
+    description: Allows one to use /bed.
+    default: true
+  smol_plugin.tag:
+    description: Allows players to configure custom tags for themselves.
+    default: true
+  smol_plugin.tag.others:
+    description: Allows one to edit others tags.
+    default: op
+  smol_plugin.openinv:
+    description: Allows one to open others inventories.
+    default: op
+  smol_plugin.swapinv:
+    description: Allows one to swap inventories with other players.
+    default: true
+  smol_plugin.general:
+    description: Allows one to use the general command.
+    default: true
+  smol_plugin.bar:
+    description: Allows one to manipulate boss bars.
+    default: op
+  smol_plugin.killall:
+    description: Allows one to use the killall command.
+    default: op
