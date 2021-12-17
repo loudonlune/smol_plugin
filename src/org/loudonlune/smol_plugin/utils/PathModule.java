@@ -23,16 +23,16 @@ public class PathModule extends SmolEventListener {
 	
 	public static final float[] notes = {
 		(float) Math.pow(2.0, -0.5), // C2
-		(float) Math.pow(2.0, 2.5),  // C5
-		(float) Math.pow(2.0, 2.0 + (5.0/6.0)), // E5
-		(float) Math.pow(2.0, 3.0), // F5
-		(float) Math.pow(2.0, 3.0 + (1.0/12.0)), // F#5
-		(float) Math.pow(2.0, 3.0 - (1.0/12.0)),  // F-flat5
-		(float) Math.pow(2.0, 2.0 + (5.0/6.0)), // E5
-		(float) Math.pow(2.0, 2.5),  // C5,
-		(float) Math.pow(2.0, 2.5 - (1.0/6.0)),  // B4
-		(float) Math.pow(2.0, 2.5 + (1.0/6.0)),  // D5
-		(float) Math.pow(2.0, 2.5),  // C5
+		(float) Math.pow(2.0, 0.5),  // C3
+		(float) Math.pow(2.0, 0.0 + (5.0/6.0)), // E3
+		(float) Math.pow(2.0, 1.0), // F3
+		(float) Math.pow(2.0, 1.0 + (1.0/12.0)), // F#3
+		(float) Math.pow(2.0, 1.0 - (1.0/12.0)),  // F-flat3
+		(float) Math.pow(2.0, 0.0 + (5.0/6.0)), // E3
+		(float) Math.pow(2.0, 0.5),  // C3,
+		(float) Math.pow(2.0, 0.5 - (1.0/6.0)),  // B2
+		(float) Math.pow(2.0, 0.5 + (1.0/6.0)),  // D3
+		(float) Math.pow(2.0, 0.5),  // C3
 	};
 	
 	public void playSound(Player p, Location loc) {
