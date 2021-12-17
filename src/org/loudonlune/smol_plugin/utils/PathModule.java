@@ -1,5 +1,8 @@
 package org.loudonlune.smol_plugin.utils;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -15,8 +18,39 @@ import org.loudonlune.smol_plugin.SmolPlugin;
 
 public class PathModule extends SmolEventListener {
 
+	private boolean disabled;
+	private HashMap<UUID, Integer> songPositions;
+	
+	public static final float[] notes = {
+		(float) Math.pow(2.0, -0.5), // C2
+		(float) Math.pow(2.0, 2.5),  // C5
+		(float) Math.pow(2.0, 2.0 + (5.0/6.0)), // E5
+		(float) Math.pow(2.0, 3.0), // F5
+		(float) Math.pow(2.0, 3.0 + (1.0/12.0)), // F#5
+		(float) Math.pow(2.0, 3.0 - (1.0/12.0)),  // F-flat5
+		(float) Math.pow(2.0, 2.0 + (5.0/6.0)), // E5
+		(float) Math.pow(2.0, 2.5),  // C5,
+		(float) Math.pow(2.0, 2.5 - (1.0/6.0)),  // B4
+		(float) Math.pow(2.0, 2.5 + (1.0/6.0)),  // D5
+		(float) Math.pow(2.0, 2.5),  // C5
+	};
+	
+	public void playSound(Player p, Location loc) {
+		UUID pid = p.getUniqueId();
+		if (!songPositions.containsKey(pid)) {
+			songPositions.put(pid, Integer.valueOf(0));
+		}
+		
+		int index = songPositions.get(pid);
+		p.playSound(loc, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 10.0f, notes[index]);
+		
+		songPositions.put(pid, Integer.valueOf((index + 1) % notes.length));
+	}
+	
 	public PathModule(SmolPlugin parent) {
 		super(parent);
+		songPositions = new HashMap<>();
+		disabled = true;
 	}
 	
 	@EventHandler
@@ -54,7 +88,7 @@ public class PathModule extends SmolEventListener {
 					} else return;
 				}
 				
-				pie.getPlayer().playSound(loc, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 10.0f, 0.5f);
+				playSound(pie.getPlayer(), loc);
 				
 				Damageable shovel = ((Damageable) handItem.getItemMeta());
 				shovel.setDamage(shovel.getDamage() - 1);	
@@ -68,6 +102,7 @@ public class PathModule extends SmolEventListener {
 	
 	@EventHandler
 	public void onRightClickWithShovelMakePath(PlayerInteractEvent pie) {
+		if (pie.getItem() == null) return;
 		Material type = pie.getItem().getType();
 		
 		switch (type) {
@@ -77,10 +112,10 @@ public class PathModule extends SmolEventListener {
 		case DIAMOND_SHOVEL:
 		case GOLDEN_SHOVEL:
 		case NETHERITE_SHOVEL:
-			if (pie.getAction().isRightClick()) {
+			if (pie.getAction().isRightClick() && pie.getClickedBlock().getType() != Material.DIRT_PATH) {
 				pie.getClickedBlock().setType(Material.DIRT_PATH);
 				
-				pie.getPlayer().playSound(pie.getClickedBlock().getLocation(), Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 10.0f, 0.5f);
+				playSound(pie.getPlayer(), pie.getClickedBlock().getLocation());
 				
 				Damageable shovel = ((Damageable) pie.getItem().getItemMeta());
 				shovel.setDamage(shovel.getDamage() - 1);	
@@ -89,6 +124,14 @@ public class PathModule extends SmolEventListener {
 			break;
 		default:
 		}
+	}
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
 	}
 	
 }
