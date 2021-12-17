@@ -165,8 +165,8 @@ async function loadStatisticsList() {
 }
 // After the page first loads
 window.addEventListener("load", function() { 
+    fixMainUrl(); // fixme REMEMBER TO UNCOMMENT
+
     typeListDiv.style.visibility = "hidden";
     loadStatisticsList();
-
-    fixMainUrl(); // fixme REMEMBER TO UNCOMMENT
 });
