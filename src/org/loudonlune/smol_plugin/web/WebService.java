@@ -16,7 +16,6 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.thread.ExecutorThreadPool;
-import org.json.simple.JSONObject;
 import org.loudonlune.smol_plugin.SmolPlugin;
 
 import jakarta.servlet.http.HttpServletRequest;
