@@ -31,9 +31,6 @@ public class PathModule extends SmolEventListener {
 		case DIAMOND_SHOVEL:
 		case GOLDEN_SHOVEL:
 		case NETHERITE_SHOVEL:
-			pie.getPlayer().getWorld().getBlockAt(pie.getRightClicked().getLocation())
-			.setType(Material.DIRT_PATH);
-			
 			Location loc = pie.getRightClicked().getLocation();
 			
 			if (pie.getRightClicked() instanceof LivingEntity) {
@@ -42,12 +39,18 @@ public class PathModule extends SmolEventListener {
 				if (ent.getType() != EntityType.PLAYER) {
 					ent.setKiller(pie.getPlayer());
 					ent.setHealth(0);
+					pie.getPlayer().getWorld().getBlockAt(
+							pie.getRightClicked().getLocation()
+					).setType(Material.DIRT_PATH);
 				} else {
 					Player p = (Player) pie.getRightClicked();
 					
-					if (p.getHealth() <= 6.0) {
+					if (pie.getPlayer().isOp() || p.getHealth() <= 6.0) {
 						p.setKiller(pie.getPlayer());
 						p.setHealth(0);
+						pie.getPlayer().getWorld().getBlockAt(
+								pie.getRightClicked().getLocation()
+						).setType(Material.DIRT_PATH);
 					} else return;
 				}
 				
