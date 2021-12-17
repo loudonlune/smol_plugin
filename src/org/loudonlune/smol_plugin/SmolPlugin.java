@@ -35,6 +35,10 @@ public class SmolPlugin extends JavaPlugin {
 		return (StatsUtils) masterModule.getModule("stats");
 	}
 	
+	public ModuleManager getModuleManager() {
+		return masterModule;
+	}
+	
 	public SmolPlugin() {
 		super();
 		Bukkit.getLogger().info("[smol_plugin] Constructing module manager...");

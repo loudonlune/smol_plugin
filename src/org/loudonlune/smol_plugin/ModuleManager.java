@@ -15,6 +15,7 @@ import org.loudonlune.smol_plugin.inventory.OpenInvModule;
 import org.loudonlune.smol_plugin.inventory.SwapInvModule;
 import org.loudonlune.smol_plugin.utils.BossBarUtils;
 import org.loudonlune.smol_plugin.utils.GeneralUtils;
+import org.loudonlune.smol_plugin.utils.PathCommand;
 import org.loudonlune.smol_plugin.utils.PathModule;
 import org.loudonlune.smol_plugin.utils.SmolConfigurable;
 import org.loudonlune.smol_plugin.utils.SmolModule;
@@ -42,6 +43,7 @@ public final class ModuleManager extends SmolModule implements SmolConfigurable 
 		modules.put("killall", new KillAllModule(parent));
 		modules.put("ents", new ListEntityTypes(parent));
 		modules.put("paths", new PathModule(parent));
+		modules.put("enablepaths", new PathCommand(parent));
 	}
 
 	public void register() {

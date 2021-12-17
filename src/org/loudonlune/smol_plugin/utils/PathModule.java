@@ -55,6 +55,9 @@ public class PathModule extends SmolEventListener {
 	
 	@EventHandler
 	public void onRightClickDoThings(PlayerInteractEntityEvent pie) {
+		if (disabled)
+			return;
+		
 		ItemStack handItem = pie.getPlayer().getInventory().getItemInMainHand();
 		Material type = handItem.getType();
 		
@@ -102,6 +105,9 @@ public class PathModule extends SmolEventListener {
 	
 	@EventHandler
 	public void onRightClickWithShovelMakePath(PlayerInteractEvent pie) {
+		if (disabled)
+			return;
+		
 		if (pie.getItem() == null) return;
 		Material type = pie.getItem().getType();
 		
