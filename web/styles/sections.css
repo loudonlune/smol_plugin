@@ -1,0 +1,35 @@
+/* MC Stats */
+/* Styles for specific sections of the page */
+
+/********** StatisticsList **********/
+
+#statisticsList {
+    width: 240px;
+    height: 30px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 25px;
+    /* text-align-last: center; */
+    font-family: Minecraft, Arial;
+    font-size: 16px;
+}
+
+#typeListDiv {
+    text-align: center;
+}
+#typeListDiv h3 {
+    margin-top: 2px;
+}
+#typeListInput {
+    width: 240px;
+    margin-top: -30px;
+    font-family: Minecraft, Arial;
+    font-size: 16px;
+}
+
+/********** ImageDiv **********/
+
+#imageDiv {
+    height: 0;
+    overflow: hidden;
+}

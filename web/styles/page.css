@@ -1,11 +1,12 @@
 /* MC Stats */
-/* Styles for page setup */
+/* Styles for page setup / formatting */
 
 * {
     z-index: 5;
 }
 
 :root {
+    /* Any possible variables */
 }
 
 @font-face{
@@ -68,17 +69,14 @@ body {
     background-position: center;
     text-align: center;
 }
-
-/* .sign h1 {
-    margin-top: 20px;
+.sign h1 {
+    margin-top: 15px;
 }
-
 .sign h2 {
     margin-top: 20px;
-} */
-
+}
 .sign h3 {
-    margin-top: 25px;
+    margin-top: 22px;
 }
 
 /********** Decorations **********/
@@ -104,30 +102,3 @@ body {
     background-position: top;
     z-index: 1;
 }
-
-/********** StatisticsList **********/
-
-#statisticsList {
-    width: 240px;
-    height: 30px;
-    display: block;
-    margin: 0 auto;
-    margin-top: 25px;
-    /* text-align-last: center; */
-    font-family: Minecraft, Arial;
-    font-size: 16px;
-}
-
-#typeListDiv {
-    text-align: center;
-}
-#typeListDiv h3 {
-    margin-top: 2px;
-}
-#typeListInput {
-    width: 240px;
-    margin-top: -30px;
-    font-family: Minecraft, Arial;
-    font-size: 16px;
-}
-

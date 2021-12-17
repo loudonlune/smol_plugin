@@ -1,6 +1,20 @@
 /* MC Stats */
 /* Styles for base components */
 
+/********** Headings **********/
+
+h1 {
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 30px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
 /********** Canvas **********/
 
 #myCanvas {
@@ -24,8 +38,8 @@ table {
 
 td {
     padding: 5px;
-    font-size: 16px;
-    font-family: "Comic Sans MS", Arial;
+    font-size: 18px;
+    font-family: Minecraft, Arial;
 }
 
 #leaderboardTable img {

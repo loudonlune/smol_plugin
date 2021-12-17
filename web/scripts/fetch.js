@@ -4,7 +4,8 @@
 //******************** Defines ********************//
 
 // URL for GET requests
-var mainUrl = 'http://192.168.93.5:6900/api/stats'
+var mainUrl = "http://73.61.100.234:8080/api/stats"; //'http://192.168.93.5:6900/api/stats'
+// todo remove these later
 
 //******************** Helper Functions ********************//
 
@@ -28,6 +29,30 @@ function getEndpointFromType(type) {
     }
 }
 
+// Check for possible errors from the response
+async function errorCheckResponse(response) {
+    // Error handle in here
+    if (response == null) {
+        showError("Error: No response received from fetch");
+    } else if (response.status == 200) {
+        return await response.json();
+    } else if (response.status == 404) {
+        showError("Error: The requested page endpoint was not found");
+    } else if (response.status == 500) {
+        showError("Error: an internal server error occurred");
+    }
+    return null;
+}
+
+// // Get response to json format, if it isn't null
+// async function (response) {
+//     if (response == null) {
+//         return null;
+//     } else {
+//         return await response.json();
+//     }
+// } // question: is this actually needed?
+
 //******************** Fetch Functions ********************//
 
 // Basic fetch when given a url
@@ -38,34 +63,20 @@ async function basicFetch(url) {
     console.log("Fetching from: ", url);
     let response = await fetch(url, { method: 'GET' })
         .catch(error => {
-            console.log(error);
+            console.log(error); // question redundant?
             showError(error);
             return null;
         })
     
     console.log("\tresponse ", response);
 
-    // Error handle in here
-    if (response == null) {
-        showError("Error: No response received from fetch");
-        return null;
-    } else if (response.status == 200) {
-        return await response.json();
-    } else if (response.status == 404) {
-        showError("Error: The requested page endpoint was not found");
-        return null;
-    } else if (response.status == 500) {
-        showError("Error: an internal server error occurred");
-        return null;
-    } else {
-        return null;
-    }
+    return errorCheckResponse(response);
 }
 
 // Runs a basic fetch to an endpoint without a query
 async function basicGetFetch(endpoint) {
     return basicFetch(mainUrl + endpoint);
-}
+} // question redundant?
 
 // Gets the statistic given only the statistic and no other queries
 async function getUntypedData(stat) {
@@ -94,4 +105,13 @@ async function getTypedData(stat, type, value) {
     } else {
         console.log("Error: type not supported!");
     }
+}
+
+// Get the head of the given player
+// Note: actually doesn't need to be fetched, just set image.src to the url
+function getPlayerHead(player) {
+    return (mainUrl + "/getPlayerHead?" + new URLSearchParams({
+        player: player,
+        size: 80,
+    }));
 }

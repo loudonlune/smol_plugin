@@ -15,6 +15,12 @@ var typeListDiv = document.getElementById("typeListDiv");
 var leaderboardErrorMsg = document.getElementById("leaderboardErrorMsg");
 var leaderboardTable = document.getElementById("leaderboardTable");
 
+// The page
+var page = document.getElementById("page");
+
+// The invisible image div for saving images
+var imageDiv = document.getElementById("imageDiv");
+
 //******************** Helper Functions ********************//
 
 // Shows an error
@@ -55,7 +61,7 @@ async function fillDataList(type) {
 }
 
 // Function to make the table for a text-version of the leaderboard
-async function buildLeaderboardTable(data) {
+function buildLeaderboardTable(data) {
     // Clear table
     leaderboardTable.innerHTML = "";
 
@@ -65,9 +71,9 @@ async function buildLeaderboardTable(data) {
 
         let head = tr.insertCell(0); 
         let img = document.createElement("img");
-        img.src = "./media/grass.png";
-        img.style.width = "30px";
-        img.style.height = "30px";
+        img.src = (findPlayerHead(el.player)).src;
+        img.style.width = "40px";
+        img.style.height = "40px";
         head.appendChild(img);
 
         let name = tr.insertCell(1); 
@@ -95,6 +101,27 @@ function displayStatisticsData(data) {
 
         drawBarGraph(data);
     }
+}
+
+// Helper function to see if the given player head was cached in the imageDiv
+// Images must be in the html to be drawn on the canvas
+function findPlayerHead(player) {
+    let playerHead = imageDiv.children[player];
+    // console.log(playerHead);
+
+    // Crete image if not cached in the imageDiv
+    if (playerHead == null) {
+        playerHead = document.createElement("img");
+        playerHead.id = player;
+        playerHead.src = getPlayerHead(player);
+        playerHead.width = 0;
+        playerHead.height = 0;
+        imageDiv.appendChild(playerHead);
+    }
+    // console.log(playerHead.complete)
+    // console.log(playerHead);
+
+    return playerHead;
 }
 
 //******************** Events ********************//
@@ -165,8 +192,8 @@ async function loadStatisticsList() {
 }
 // After the page first loads
 window.addEventListener("load", function() { 
-    fixMainUrl(); // fixme REMEMBER TO UNCOMMENT
-
     typeListDiv.style.visibility = "hidden";
+
+    fixMainUrl(); // fixme REMEMBER TO UNCOMMENT
     loadStatisticsList();
 });

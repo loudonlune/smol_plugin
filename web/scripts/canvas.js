@@ -39,7 +39,7 @@ const draw = {
         ctx.fill();
     },
     text: function(x, y, color, font, textAlign, text) {
-        ctx.font = font; //"28px Arial";
+        ctx.font = font;
         ctx.textAlign = textAlign;
         ctx.fillStyle = color;
         ctx.scale(1, -1);
@@ -102,6 +102,8 @@ var barTotal;
 var barData;
 var heightInterval;
 
+// todo add checkbox for comic sans vs minecraft font
+
 function drawBarGraph(data) {
     draw.erase();
 
@@ -124,7 +126,21 @@ function drawBarGraph(data) {
 
     // Draw player heads (once for this graph)
     for (let i = 0; i < barTotal; i++) {
-        draw.image(35, canvas.height - ((i) * heightInterval) - 35, 50, 50, document.getElementById("grassBlock"));
+        let img = findPlayerHead(barData[i].player);
+        // Make sure image has loaded
+        if (img.complete) {
+            draw.image(35, canvas.height - ((i) * heightInterval) - 35, 50, 50, img);
+        } else {
+            // Temp loading image of grass
+            draw.image(35, canvas.height - ((i) * heightInterval) - 35, 50, 50, document.getElementById("grassBlock"));
+            // Draw the image when it's finished loading
+            img.onload = async function() {
+                draw.image(35, canvas.height - ((i) * heightInterval) - 35, 50, 50, img);
+                if (i == 0) {
+                    draw.heart(35, canvas.height - 35, 4);
+                }
+            }
+        }
     }
 
     // Top player gets a heart
@@ -160,8 +176,8 @@ function drawBars() {
         }
 
         // Draw player name and value
-        draw.text(130, rectY + 9, "black", "16px 'Comic Sans MS'", "left", barData[i].player);
-        draw.text((canvas.width - 40), rectY + 9, "white", "16px 'Comic Sans MS'", "right", value);
+        draw.text(130, rectY + 8, "black", "18px Minecraft", "left", barData[i].player);
+        draw.text((canvas.width - 40), rectY + 8, "white", "18px Minecraft", "right", value);
     }
 
     // Stop the interval when it's filled

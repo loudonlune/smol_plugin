@@ -6,10 +6,8 @@
 
     <!-- Styles -->
     <link href="./styles/page.css" rel="stylesheet"/>
-    <!-- <link href="./styles/sections.css" rel="stylesheet"/> -->
+    <link href="./styles/sections.css" rel="stylesheet"/>
     <link href="./styles/base.css" rel="stylesheet"/>
-    <!-- <link href="./styles/misc.css" rel="stylesheet"/> -->
-    <!-- <link href="./styles/flip-card.css" rel="stylesheet"/> -->
 </head>
 <body>
     <div id="grass"></div>
@@ -54,20 +52,21 @@
             <canvas id="myCanvas" width="640px" height="560px"></canvas>
 
             <table id="leaderboardTable"></table>
+
+            <!-- <h2>Player Stats</h2> -->
+            <!-- todo add option to search specific player stats -->
+
+            <div id="imageDiv">
+                <img id="grassBlock" src="./media/grass.png" width="0px" height="0px"/> 
+            </div>
         </div>
         <div class="tree"></div>
-
-
-        <!-- <h2>Player Stats</h2> -->
-        <!-- todo add option to search specific player stats -->
-
-
-        <!-- fixme remove (images for canvas testing) -->
-        <img id="grassBlock" src="./media/grass.png" width="0px" height="0px"/>
+        
     </div>
 
     <!-- Import scripts -->
     <script src="./scripts/canvas.js"></script>
+    <!-- <script src="./scripts/cookies.js"></script> -->
     <script src="./scripts/script.js"></script>
     <script src="./scripts/fetch.js"></script>    
 </body>
