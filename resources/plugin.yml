@@ -10,6 +10,10 @@ database: false
 depend: [ NBTAPI ]
  
 commands:
+  enablepaths:
+    description: Enables/disables the paths functionality
+    alias: [ ep ]
+    permission: smol_plugin.enablepaths
   ents:
     description: Lists entity types.
     aliases: [ et ]
@@ -85,4 +89,7 @@ permissions:
     default: op
   smol_plugin.killall:
     description: Allows one to use the killall command.
+    default: op
+  smol_plugin.enablepaths:
+    description: Controls paths
     default: op
