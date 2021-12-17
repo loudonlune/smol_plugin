@@ -51,26 +51,43 @@ const draw = {
         ctx.drawImage(image, x, y * -1, width, height);
         ctx.scale(1, -1);
     },
-    // todo make this into a Minecraft pixelated heart
-    // heart: function(x, y, cube) {
-    //     // DRAW PIXELATED HEART MATCHING STARDEW
-    //     // Outside #6a0005
-    //     draw.rect(x - (cube * 4), y - (cube * 0), cube * 7, cube * 2, "#6a0005");
-    //     draw.rect(x - (cube * 3), y - (cube * 1), cube * 2, cube * 4, "#6a0005");
-    //     draw.rect(x + (cube * 0), y - (cube * 1), cube * 2, cube * 4, "#6a0005");
-    //     draw.rect(x - (cube * 2), y - (cube * 2), cube * 3, cube * 1, "#6a0005");
-    //     draw.rect(x - (cube * 1), y - (cube * 3), cube * 1, cube * 1, "#6a0005");
-    //     // Inside #d83a01
-    //     draw.rect(x - (cube * 3), y - (cube * 0), cube * 2, cube * 2, "#d83a01");
-    //     draw.rect(x - (cube * 0), y - (cube * 0), cube * 2, cube * 2, "#d83a01");
-    //     draw.rect(x - (cube * 2), y - (cube * 1), cube * 3, cube * 2, "#d83a01");
-    //     draw.rect(x - (cube * 1), y - (cube * 2), cube * 1, cube * 1, "#d83a01");
-    //     // Inside highlight #f16f53
-    //     draw.rect(x - (cube * 2), y + (cube * 1), cube * 1, cube * 1, "#f16f53");
-    //     draw.rect(x + (cube * 1), y + (cube * 1), cube * 1, cube * 1, "#f16f53");
+    heart: function(xOrig, yOrig, cube) {
+        // DRAW PIXELATED HEART MATCHING MINECRAFT
+        x = xOrig - (cube * 0.5);
+        y = yOrig - (cube * 1);
 
-    //     // draw.circle(x, y, 1, "#000000");
-    // },
+        // Outside #000000
+        let outside = "#000000";
+        draw.rect(x - (cube * 4), y + (cube * 0), cube * 9, cube * 3, outside);
+        draw.rect(x - (cube * 3), y - (cube * 1), cube * 7, cube * 5, outside);
+        draw.rect(x - (cube * 2), y - (cube * 2), cube * 2, cube * 7, outside);
+        draw.rect(x + (cube * 1), y - (cube * 2), cube * 2, cube * 7, outside);
+        draw.rect(x - (cube * 1), y - (cube * 3), cube * 3, cube * 2, outside);
+        draw.rect(x - (cube * 0), y - (cube * 4), cube * 1, cube * 1, outside);
+
+        // Inside #f34135
+        let inside = "#f34135";
+        draw.rect(x - (cube * 3), y + (cube * 0), cube * 7, cube * 3, inside);
+        draw.rect(x - (cube * 2), y - (cube * 0), cube * 2, cube * 4, inside);
+        draw.rect(x + (cube * 1), y - (cube * 0), cube * 2, cube * 4, inside);
+        draw.rect(x - (cube * 2), y - (cube * 1), cube * 5, cube * 1, inside);
+        draw.rect(x - (cube * 1), y - (cube * 2), cube * 3, cube * 2, inside);
+        
+        // Bottom #be340c
+        let bottom = "#be340c";
+        draw.rect(x - (cube * 3), y - (cube * 0), cube * 1, cube * 1, bottom);
+        draw.rect(x + (cube * 3), y - (cube * 0), cube * 1, cube * 1, bottom);
+        draw.rect(x - (cube * 2), y - (cube * 1), cube * 1, cube * 1, bottom);
+        draw.rect(x + (cube * 2), y - (cube * 1), cube * 1, cube * 1, bottom);
+        draw.rect(x - (cube * 1), y - (cube * 2), cube * 1, cube * 1, bottom);
+        draw.rect(x + (cube * 1), y - (cube * 2), cube * 1, cube * 1, bottom);
+        draw.rect(x - (cube * 0), y - (cube * 3), cube * 1, cube * 1, bottom);
+        
+        // Detail #fdfffa
+        draw.rect(x - (cube * 2), y + (cube * 2), cube * 1, cube * 1, "#fdfffa");
+
+        // draw.circle(xOrig, yOrig, 2, "blue");
+    },
     erase: function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
@@ -81,6 +98,7 @@ const draw = {
 // Variables for drawing bars
 var barInterval;
 var barPercent = 0;
+var barTotal;
 var barData;
 var heightInterval;
 
@@ -88,19 +106,29 @@ function drawBarGraph(data) {
     draw.erase();
 
     // Set shared variables for the interval
-    heightInterval = (canvas.height - 80) / (data.length - 1);
     barPercent = 2;
+    barTotal = data.length;
+    if (barTotal > 5) {
+        barTotal = 5;
+    }
+    heightInterval = 110;
     barData = data;
 
-    // todo check if first one is 0, then don't continue the interval more than once
+    // Check if first one is 0, then don't continue the interval more than once
+    if (data[0].value == 0) {
+        barPercent = 100;
+    }
 
     // Start the interval to incrementally draw the bars
     barInterval = setInterval(drawBars, 100);
 
     // Draw player heads (once for this graph)
-    for (let i = 0; i < data.length; i++) {
-        draw.image(35, ((i + 1) * heightInterval) - 5, 50, 50, document.getElementById("grassBlock"));
+    for (let i = 0; i < barTotal; i++) {
+        draw.image(35, canvas.height - ((i) * heightInterval) - 35, 50, 50, document.getElementById("grassBlock"));
     }
+
+    // Top player gets a heart
+    draw.heart(35, canvas.height - 35, 4);
 }
 
 // Interval function to draw bars based off of saved data and a percents
@@ -116,10 +144,10 @@ function drawBars() {
     // Scale so the bar grows over the interval time
     let percent = barPercent / 100;
 
-    for (let i = 0; i < barData.length; i++) {
+    for (let i = 0; i < barTotal; i++) {
         let value = barData[i].value;
 
-        let rectY = canvas.height - ((i + 1) * heightInterval) + 10;
+        let rectY = canvas.height - ((i) * heightInterval) - 40 - 35;
 
         // Don't draw if no value
         if (value != 0) {

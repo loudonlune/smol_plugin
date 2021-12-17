@@ -116,7 +116,22 @@ statisticsList.oninput = async function() {
 
 // On dataList selection of type param
 typeListInput.onblur = async function() {
-    // todo check text is in datalist
+    // Make sure something was inputted, else stop
+    if (typeListInput.value == "") {
+        return 0;
+    }
+
+    // Check that the input is a valid selection from the datalist
+    let optionFound = false;
+    for (let i = 0; i < typeList.options.length; i++) {
+        if (typeList.options[i].innerHTML == typeListInput.value) {
+            optionFound = true;
+            break;
+        }
+    }
+    if (!optionFound) {
+        return 0;
+    }
 
     console.log("Selected " + typeListInput.value + "!");
 
