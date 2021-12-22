@@ -2,6 +2,10 @@
 
 A plugin that does many things.
 
+## Download
+
+Builds from main can be found here: [Our Jenkins CI Server](http://73.61.100.234:8000/)
+
 ## Building
 
 ### Requirements
