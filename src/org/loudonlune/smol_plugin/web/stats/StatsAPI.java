@@ -40,6 +40,27 @@ public class StatsAPI extends APIDirectory {
 	//public static OfflinePlayer[] offlinePlayers;
 	
 	public void initialize(StatsUtils statsUtils) {
+		
+		addMember(new APIEndpoint("getVersion") {
+			
+			@Override
+			public int call(HttpServletRequest req, HttpServletResponse resp) {
+				try {
+					PrintWriter bodyWriter = resp.getWriter();
+					
+					bodyWriter.write(Message.serializeString(Bukkit.getServer().getMinecraftVersion()));
+					
+					bodyWriter.flush();
+				} catch (IOException e) {
+					Bukkit.getLogger().log(Level.SEVERE, e.toString());
+					return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+				}
+				
+				return HttpServletResponse.SC_OK;
+			}
+		});
+		
+		// GET /api/stats/getStatisticsList
 		addMember(new APIEndpoint("getStatisticsList") {
 			
 			@SuppressWarnings("unchecked")
@@ -67,6 +88,7 @@ public class StatsAPI extends APIDirectory {
 			
 		});
 		
+		// GET /api/stats/getBlockList
 		addMember(new APIEndpoint("getBlockList") {
 			
 			@SuppressWarnings("unchecked")
@@ -92,6 +114,7 @@ public class StatsAPI extends APIDirectory {
 			}
 		});
 		
+		// GET /api/stats/getItemList
 		addMember(new APIEndpoint("getItemList") {
 
 			@SuppressWarnings("unchecked")
@@ -118,6 +141,7 @@ public class StatsAPI extends APIDirectory {
 			
 		});
 		
+		// GET /api/stats/getEntityList
 		addMember(new APIEndpoint("getEntityList") {
 
 			@SuppressWarnings("unchecked")
@@ -142,6 +166,7 @@ public class StatsAPI extends APIDirectory {
 			}
 		});
 		
+		// GET /api/stats/getPlayerData
 		addMember(new APIEndpoint("getPlayerData") {
 
 			@Override
@@ -168,6 +193,7 @@ public class StatsAPI extends APIDirectory {
 			
 		});
 		
+		// GET /api/stats/getPlayerList
 		addMember(new APIEndpoint("getPlayerList") {
 			
 			@SuppressWarnings("unchecked")
@@ -192,6 +218,7 @@ public class StatsAPI extends APIDirectory {
 			}
 		});
 		
+		// GET /api/stats/getPlayerHead
 		addMember(new APIEndpoint("getPlayerHead") {
 
 			@Override
@@ -257,6 +284,7 @@ public class StatsAPI extends APIDirectory {
 			
 		});
 		
+		// GET /api/stats/getData
 		addMember(new APIEndpoint("getData") {
 
 			@SuppressWarnings("unchecked")
