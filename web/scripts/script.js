@@ -11,8 +11,9 @@ var typeList = document.getElementById("typeList");
 var typeListInput = document.getElementById("typeListInput");
 var typeListDiv = document.getElementById("typeListDiv");
 
-// Text version of leaderboard
+// Leaderboard stuff
 var leaderboardErrorMsg = document.getElementById("leaderboardErrorMsg");
+var leaderboardRefreshBtn = document.getElementById("leaderboardRefreshBtn");
 var leaderboardTable = document.getElementById("leaderboardTable");
 
 // The page
@@ -25,8 +26,14 @@ var imageDiv = document.getElementById("imageDiv");
 
 // Shows an error
 function showError(msg) {
-    console.error(msg);
-    leaderboardErrorMsg.innerHTML = msg;
+    console.error("%cError" + "%c " + msg, [
+        "color: #ffffff",
+        "background-color: #961d29",
+        "padding: 2px 4px",
+        "border-radius: 2px"
+    ].join(";"), "");
+    leaderboardErrorMsg.innerHTML = "Error: " + msg;
+    draw.erase();
 }
 // todo function to clear this error message?
 
@@ -78,7 +85,7 @@ async function fillDataList(type) {
         list = await basicGetFetch(getEndpointFromType(type));
 
         if (list == null) {
-            showError("Error: No typed data loaded!");
+            showError("No typed data loaded!");
             return;
         } else {
             setCookie(type, JSON.stringify(list));
@@ -87,7 +94,7 @@ async function fillDataList(type) {
 
     if (list == null) {
         // Handle if no data is returned
-        showError("Error: typed data not loaded!");
+        showError("typed data not loaded!");
     } else {
         list.forEach(el => {
             addOptionToSelect(typeList, el, el);
@@ -123,7 +130,7 @@ function buildLeaderboardTable(data) {
 function displayStatisticsData(data) {
     if (data == null) {
         // Handle if nothing is returned from get statistic
-        showError("Error: getData did not return data!");
+        showError("getData did not return data!");
     } else {
         // Sort by value (greatest to least)
         data.sort((a, b) => (a.value < b.value) ? 1 : -1);
@@ -174,6 +181,7 @@ statisticsList.oninput = async function() {
 typeListInput.onblur = async function() {
     // Make sure something was inputted, else stop
     if (typeListInput.value == "") {
+        showError("No target selected");
         return 0;
     }
 
@@ -186,6 +194,7 @@ typeListInput.onblur = async function() {
         }
     }
     if (!optionFound) {
+        showError("No valid target selected");
         return 0;
     }
 
@@ -201,6 +210,16 @@ typeListInput.addEventListener("keyup", function(event) {
     }
 });
 
+// Refresh the given selected stats
+leaderboardRefreshBtn.onclick = function() {
+    consoleAction("Refreshing the leaderboard data");
+    if (typeListDiv.style.visibility == "hidden") {
+        statisticsList.oninput();
+    } else {
+        typeListInput.onblur();
+    }
+}
+
 //******************** Initial Loading ********************//
 
 // Fetches and loads the statistics on the page
@@ -213,7 +232,7 @@ async function loadStatisticsList() {
         statistics = await basicGetFetch("/getStatisticsList");
 
         if (statistics == null) {
-            showError("Error: No statistics loaded!");
+            showError("No statistics loaded!");
             return;
         } else {
             // Sort by value (alphabetized)
@@ -233,7 +252,7 @@ async function loadStatisticsList() {
 window.addEventListener("load", function() { 
     hideTypeList();
 
-    fixMainUrl(); // fixme REMEMBER TO UNCOMMENT
+    fixMainUrl(); // hack REMEMBER TO UNCOMMENT
 
     // todo add endpoint for mc version
     // todo check mc version and then invalidate saved cookies if changed so everything will get fetched again

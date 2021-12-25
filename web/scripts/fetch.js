@@ -33,13 +33,13 @@ function getEndpointFromType(type) {
 async function errorCheckResponse(response) {
     // Error handle in here
     if (response == null) {
-        showError("Error: No response received from fetch");
+        showError("No response received from fetch");
     } else if (response.status == 200) {
         return await response.json();
     } else if (response.status == 404) {
-        showError("Error: The requested page endpoint was not found");
+        showError("The requested page endpoint was not found");
     } else if (response.status == 500) {
-        showError("Error: an internal server error occurred");
+        showError("An internal server error occurred");
     }
     return null;
 }
