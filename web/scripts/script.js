@@ -68,12 +68,26 @@ async function fillDataList(type) {
     typeListInput.value = "";
     typeList.innerHTML = "";
 
-    console.info("Must fetch " + type + " list!");
-    var list = await basicGetFetch(getEndpointFromType(type));
+    console.info("Must load " + type + " list!");
+
+    var list = getCookie(type);
+    if (list != null) {
+        consoleAction("Got " + type + " data from cookie!");
+        list = JSON.parse(list);
+    } else {
+        list = await basicGetFetch(getEndpointFromType(type));
+
+        if (list == null) {
+            showError("Error: No typed data loaded!");
+            return;
+        } else {
+            setCookie(type, JSON.stringify(list));
+        }
+    }
 
     if (list == null) {
         // Handle if no data is returned
-        showError("Error: statisticsList not loaded!");
+        showError("Error: typed data not loaded!");
     } else {
         list.forEach(el => {
             addOptionToSelect(typeList, el, el);
@@ -180,7 +194,12 @@ typeListInput.onblur = async function() {
     let stat = JSON.parse(statisticsList.value);
     displayStatisticsData(await getTypedData(stat.statistic, stat.type, typeListInput.value));
 }
-// idea add an event that triggers the above on enter key press
+// This triggers the above on enter key press (more natural while typing)
+typeListInput.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        this.blur();
+    }
+});
 
 //******************** Initial Loading ********************//
 
@@ -189,7 +208,7 @@ async function loadStatisticsList() {
     var statistics = getCookie("statisticsList");
     if (statistics != null) {
         consoleAction("Got statisticsList from cookie!");
-        statistics = JSON.parse(decompressForCookie(statistics, [['"statistic":', '"s":'], ['"type":', '"t":'], ['"UNTYPED"', '"u"']]));
+        statistics = JSON.parse(statistics);
     } else {
         statistics = await basicGetFetch("/getStatisticsList");
 
@@ -197,22 +216,19 @@ async function loadStatisticsList() {
             showError("Error: No statistics loaded!");
             return;
         } else {
-            let s = JSON.stringify(statistics);
+            // Sort by value (alphabetized)
+            statistics.sort((a, b) => (a.statistic > b.statistic) ? 1 : -1);
 
-            // Compress manually to get under 4kb for cookie
-            s = compressForCookie(s, [['"statistic":', '"s":'], ['"type":', '"t":'], ['"UNTYPED"', '"u"']]);
-            setCookie("statisticsList", s);
+            setCookie("statisticsList", JSON.stringify(statistics));
         }
     }
-
-    // Sort by value (alphabetized)
-    statistics.sort((a, b) => (a.statistic > b.statistic) ? 1 : -1);
 
     // Load elements into dropdown
     statistics.forEach(el => {
         addOptionToSelect(statisticsList, el.statistic, JSON.stringify(el));
     })
 }
+
 // After the page first loads
 window.addEventListener("load", function() { 
     hideTypeList();
