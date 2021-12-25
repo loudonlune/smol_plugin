@@ -157,7 +157,7 @@ function drawBarGraph(data) {
 
 // Interval function to draw bars based off of saved data and a percents
 function drawBars() {
-    console.log("(Action) Drawing bars");
+    consoleAction("Drawing bars");
 
     // Erase previous bars area first
     ctx.clearRect(114, 0, canvas.width, canvas.height);

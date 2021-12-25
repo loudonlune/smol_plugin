@@ -5,7 +5,7 @@
 
 // Saves a cookie with the key name and the data given
 function setCookie(key, data) {
-    console.log("Setting cookie " + key + " to " + data) //fixme
+    console.info("Setting cookie " + key + " to " + data) //fixme
     document.cookie = key + "=" + data + "; SameSite=Strict; " + "max-age=" + (30*24*60*60);
 }
 

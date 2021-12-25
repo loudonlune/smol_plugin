@@ -13,7 +13,7 @@ var mainUrl = "http://73.61.100.234:8080/api/stats"; //'http://192.168.93.5:6900
 function fixMainUrl() {
     let tempUrl = window.location.href
     mainUrl = tempUrl.slice(0, tempUrl.lastIndexOf("/")) + "/api/stats";
-    console.log("API URL: " + mainUrl);
+    console.info("API URL: " + mainUrl);
 }
 
 // Helper function to return endpoint based on type
@@ -25,7 +25,7 @@ function getEndpointFromType(type) {
     } else if (type == "ENTITY") {
         return "/getEntityList";
     } else {
-        console.log("Error: type not supported!");
+        console.error("Error: type not supported!");
     }
 }
 
@@ -60,7 +60,7 @@ async function basicFetch(url) {
     // Clear previous error message
     leaderboardErrorMsg.innerHTML = "";
 
-    console.log("(Action) Fetching from: ", url);
+    consoleAction("Fetching from: ", url);
     let response = await fetch(url, { method: 'GET' })
         .catch(error => {
             console.log(error); // question redundant?
@@ -68,7 +68,7 @@ async function basicFetch(url) {
             return null;
         })
     
-    console.log("\tresponse ", response);
+    console.info("\tResponse: ", response);
 
     return errorCheckResponse(response);
 }
@@ -103,7 +103,7 @@ async function getTypedData(stat, type, value) {
             entity: value,
         }));
     } else {
-        console.log("Error: type not supported!");
+        console.error("Error: type not supported!");
     }
 }
 

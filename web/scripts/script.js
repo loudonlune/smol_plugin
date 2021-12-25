@@ -21,23 +21,35 @@ var page = document.getElementById("page");
 // The invisible image div for saving images
 var imageDiv = document.getElementById("imageDiv");
 
-//******************** Helper Functions ********************//
+//******************** Console Printing ********************//
 
 // Shows an error
 function showError(msg) {
-    console.log(msg);
+    console.error(msg);
     leaderboardErrorMsg.innerHTML = msg;
 }
 // todo function to clear this error message?
 
+// Prints an "action" tag in front of the given text, to console.log()
+function consoleAction(text) {
+    console.log("%cAction%c " + text, [
+        "color: #ffffff",
+        "background-color: #2b4d7a",
+        "padding: 2px 4px",
+        "border-radius: 2px"
+    ].join(";"), "");
+}
+
+//******************** Helper Functions ********************//
+
 // Functions to show/hide typeList
 function hideTypeList() {
-    console.log("(Action) Hiding typelist");
+    consoleAction("Hiding typelist");
     typeListDiv.style.visibility = "hidden";
     typeListDiv.style.width = 0;
 }
 function showTypeList() {
-    console.log("(Action) Showing typelist)");
+    consoleAction("Showing typelist)");
     typeListDiv.style.visibility = "visible";
     typeListDiv.style.width = 80 * 4 + "px";
 }
@@ -56,7 +68,7 @@ async function fillDataList(type) {
     typeListInput.value = "";
     typeList.innerHTML = "";
 
-    console.log("Must fetch " + type + "!");
+    console.info("Must fetch " + type + " list!");
     var list = await basicGetFetch(getEndpointFromType(type));
 
     if (list == null) {
@@ -64,7 +76,6 @@ async function fillDataList(type) {
         showError("Error: statisticsList not loaded!");
     } else {
         list.forEach(el => {
-            // console.log(el);
             addOptionToSelect(typeList, el, el);
         })
     }
@@ -96,8 +107,6 @@ function buildLeaderboardTable(data) {
 
 // Helper function to display statistic data
 function displayStatisticsData(data) {
-    // console.log(data);
-
     if (data == null) {
         // Handle if nothing is returned from get statistic
         showError("Error: getData did not return data!");
@@ -116,7 +125,6 @@ function displayStatisticsData(data) {
 // Images must be in the html to be drawn on the canvas
 function findPlayerHead(player) {
     let playerHead = imageDiv.children[player];
-    // console.log(playerHead);
 
     // Crete image if not cached in the imageDiv
     if (playerHead == null) {
@@ -127,8 +135,6 @@ function findPlayerHead(player) {
         playerHead.height = 0;
         imageDiv.appendChild(playerHead);
     }
-    // console.log(playerHead.complete)
-    // console.log(playerHead);
 
     return playerHead;
 }
@@ -138,7 +144,7 @@ function findPlayerHead(player) {
 // On statisticList dropdown selection
 statisticsList.oninput = async function() {
     let stat = JSON.parse(this.value);
-    console.log("Statistic " + stat.statistic + " selected!");
+    console.info("Statistic " + stat.statistic + " selected!");
 
     if (stat.type == "UNTYPED") {
         hideTypeList(); 
@@ -169,7 +175,7 @@ typeListInput.onblur = async function() {
         return 0;
     }
 
-    console.log("Selected " + typeListInput.value + "!");
+    console.info("Selected " + typeListInput.value + "!");
 
     let stat = JSON.parse(statisticsList.value);
     displayStatisticsData(await getTypedData(stat.statistic, stat.type, typeListInput.value));
@@ -182,7 +188,7 @@ typeListInput.onblur = async function() {
 async function loadStatisticsList() {
     var statistics = getCookie("statisticsList");
     if (statistics != null) {
-        console.log("(Action) Got statisticsList from cookie!");
+        consoleAction("Got statisticsList from cookie!");
         statistics = JSON.parse(decompressForCookie(statistics, [['"statistic":', '"s":'], ['"type":', '"t":'], ['"UNTYPED"', '"u"']]));
     } else {
         statistics = await basicGetFetch("/getStatisticsList");
@@ -198,14 +204,12 @@ async function loadStatisticsList() {
             setCookie("statisticsList", s);
         }
     }
-    // console.log(statistics);
 
     // Sort by value (alphabetized)
     statistics.sort((a, b) => (a.statistic > b.statistic) ? 1 : -1);
 
     // Load elements into dropdown
     statistics.forEach(el => {
-        // console.log(el);
         addOptionToSelect(statisticsList, el.statistic, JSON.stringify(el));
     })
 }
@@ -213,9 +217,9 @@ async function loadStatisticsList() {
 window.addEventListener("load", function() { 
     hideTypeList();
 
-    // fixMainUrl(); // fixme REMEMBER TO UNCOMMENT
+    fixMainUrl(); // fixme REMEMBER TO UNCOMMENT
 
-    // todo add endpoint for mc version 
+    // todo add endpoint for mc version
     // todo check mc version and then invalidate saved cookies if changed so everything will get fetched again
 
     loadStatisticsList();
