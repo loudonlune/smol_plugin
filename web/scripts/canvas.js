@@ -96,7 +96,7 @@ const draw = {
 //******************** Canvas Drawing Functions ********************//
 
 // Variables for drawing bars
-var barInterval;
+var barInterval = null;
 var barPercent = 0;
 var barTotal;
 var barData;
@@ -121,6 +121,10 @@ function drawBarGraph(data) {
         barPercent = 100;
     }
 
+    // Check that another interval is not already running
+    if (barInterval != null) {
+        clearInterval(barInterval);
+    }
     // Start the interval to incrementally draw the bars
     barInterval = setInterval(drawBars, 100);
 
@@ -135,6 +139,9 @@ function drawBarGraph(data) {
             draw.image(35, canvas.height - ((i) * heightInterval) - 35, 50, 50, document.getElementById("grassBlock"));
             // Draw the image when it's finished loading
             img.onload = async function() {
+                // Erase temp image
+                ctx.clearRect(35, canvas.height - ((i) * heightInterval) - 35 - 50, 50, 50);
+                // Draw loaded player image
                 draw.image(35, canvas.height - ((i) * heightInterval) - 35, 50, 50, img);
                 if (i == 0) {
                     draw.heart(35, canvas.height - 35, 4);
@@ -145,11 +152,12 @@ function drawBarGraph(data) {
 
     // Top player gets a heart
     draw.heart(35, canvas.height - 35, 4);
+    // idea use diamond, gold, iron, copper as 1st 2nd etc instead
 }
 
 // Interval function to draw bars based off of saved data and a percents
 function drawBars() {
-    console.log("Drawing bars");
+    console.log("(Action) Drawing bars");
 
     // Erase previous bars area first
     ctx.clearRect(114, 0, canvas.width, canvas.height);
@@ -183,6 +191,7 @@ function drawBars() {
     // Stop the interval when it's filled
     if (barPercent >= 100) {
         clearInterval(barInterval);
+        barInterval = null;
     } else {
         barPercent += 4;
     }

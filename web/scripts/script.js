@@ -28,9 +28,19 @@ function showError(msg) {
     console.log(msg);
     leaderboardErrorMsg.innerHTML = msg;
 }
-// todo function to clear this error message
+// todo function to clear this error message?
 
-// todo functions to show/hide typeList
+// Functions to show/hide typeList
+function hideTypeList() {
+    console.log("(Action) Hiding typelist");
+    typeListDiv.style.visibility = "hidden";
+    typeListDiv.style.width = 0;
+}
+function showTypeList() {
+    console.log("(Action) Showing typelist)");
+    typeListDiv.style.visibility = "visible";
+    typeListDiv.style.width = 80 * 4 + "px";
+}
 
 // Helper function to quickly add options into a select element
 function addOptionToSelect(select, text, value) {
@@ -42,7 +52,7 @@ function addOptionToSelect(select, text, value) {
 
 // Helper function to fetch and fill the datalist select specifically
 async function fillDataList(type) {
-    typeListDiv.style.visibility = "visible";
+    showTypeList();
     typeListInput.value = "";
     typeList.innerHTML = "";
 
@@ -86,9 +96,8 @@ function buildLeaderboardTable(data) {
 
 // Helper function to display statistic data
 function displayStatisticsData(data) {
-    // Go right to query
-    console.log(data);
-    
+    // console.log(data);
+
     if (data == null) {
         // Handle if nothing is returned from get statistic
         showError("Error: getData did not return data!");
@@ -132,7 +141,7 @@ statisticsList.oninput = async function() {
     console.log("Statistic " + stat.statistic + " selected!");
 
     if (stat.type == "UNTYPED") {
-        typeListDiv.style.visibility = "hidden";
+        hideTypeList(); 
         displayStatisticsData(await getUntypedData(stat.statistic));
         
     } else {
@@ -171,29 +180,43 @@ typeListInput.onblur = async function() {
 
 // Fetches and loads the statistics on the page
 async function loadStatisticsList() {
-    var statistics = await basicGetFetch("/getStatisticsList");
+    var statistics = getCookie("statisticsList");
+    if (statistics != null) {
+        console.log("(Action) Got statisticsList from cookie!");
+        statistics = JSON.parse(decompressForCookie(statistics, [['"statistic":', '"s":'], ['"type":', '"t":'], ['"UNTYPED"', '"u"']]));
+    } else {
+        statistics = await basicGetFetch("/getStatisticsList");
+
+        if (statistics == null) {
+            showError("Error: No statistics loaded!");
+            return;
+        } else {
+            let s = JSON.stringify(statistics);
+
+            // Compress manually to get under 4kb for cookie
+            s = compressForCookie(s, [['"statistic":', '"s":'], ['"type":', '"t":'], ['"UNTYPED"', '"u"']]);
+            setCookie("statisticsList", s);
+        }
+    }
     // console.log(statistics);
 
     // Sort by value (alphabetized)
     statistics.sort((a, b) => (a.statistic > b.statistic) ? 1 : -1);
-    
-    if (statistics == null) {
-        // Handle if something goes wrong (aka no stats)
-        showError("Error: No statistics loaded!")
-    } else {
-        // Load elements into dropdown
-        statistics.forEach(el => {
-            // console.log(el);
-            addOptionToSelect(statisticsList, el.statistic, JSON.stringify(el));
-        })
-    }
 
-    
+    // Load elements into dropdown
+    statistics.forEach(el => {
+        // console.log(el);
+        addOptionToSelect(statisticsList, el.statistic, JSON.stringify(el));
+    })
 }
 // After the page first loads
 window.addEventListener("load", function() { 
-    typeListDiv.style.visibility = "hidden";
+    hideTypeList();
 
-    fixMainUrl(); // fixme REMEMBER TO UNCOMMENT
+    // fixMainUrl(); // fixme REMEMBER TO UNCOMMENT
+
+    // todo add endpoint for mc version 
+    // todo check mc version and then invalidate saved cookies if changed so everything will get fetched again
+
     loadStatisticsList();
 });

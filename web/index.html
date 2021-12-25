@@ -1,8 +1,10 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
 	<title>MC Stats</title>
 	<meta name="description" content="A website that displays everyone's stats on the Minecraft server.">
 	<link rel="icon" href="./media/grass.png">
+    <meta charset="utf-8"/>
 
     <!-- Styles -->
     <link href="./styles/page.css" rel="stylesheet"/>
@@ -24,29 +26,24 @@
 
             <div class="sign">
                 <h2>Leaderboards</h2>
-            </div>
-
-            <div class="emptyRow">
                 <p id="leaderboardErrorMsg"></p>
             </div>
 
-            <div class="sign">
-                <h3>Select a Statistic:</h3>
-            </div>
+            <!-- todo add a refresh button to send the fetch again and update the data -->
             
-            <div class="emptyRow">
+            <div class="emptyRow" style="display: flex; justify-content: space-around;">
                 <select name="statisticsList" id="statisticsList"></select>
                 <!-- idea for later, convert this to a searchable datalist -->
                 <!-- <div id="statisticsListDiv">
                     <input placeholder="Start typing…" list="statisticsList" id="statisticsListInput">
                     <datalist id="statisticsList"></datalist>
                 </div> -->
-            </div>
-            
-            <div id="typeListDiv" class="emptyRow">
-                <h3>Select a Target:</h3>
-                <input placeholder="Start typing…" list="typeList" id="typeListInput">
-                <datalist id="typeList"></datalist>
+
+                <div id="typeListDiv">
+                    <h4>Select a Target:</h4>
+                    <input placeholder="Start typing…" list="typeList" id="typeListInput">
+                    <datalist id="typeList"></datalist>
+                </div>
             </div>
 
             <canvas id="myCanvas" width="640px" height="560px"></canvas>
@@ -55,6 +52,10 @@
 
             <!-- <h2>Player Stats</h2> -->
             <!-- todo add option to search specific player stats -->
+
+            <!-- todo add link to map -->
+
+            <!-- todo add settings menu to clear cookies, comic sans checkbox -->
 
             <div id="imageDiv">
                 <img id="grassBlock" src="./media/grass.png" width="0px" height="0px"/> 
@@ -66,7 +67,7 @@
 
     <!-- Import scripts -->
     <script src="./scripts/canvas.js"></script>
-    <!-- <script src="./scripts/cookies.js"></script> -->
+    <script src="./scripts/cookies.js"></script>
     <script src="./scripts/script.js"></script>
     <script src="./scripts/fetch.js"></script>    
 </body>

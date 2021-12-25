@@ -74,9 +74,13 @@ body {
 }
 .sign h2 {
     margin-top: 20px;
+    margin-bottom: 0;
 }
 .sign h3 {
     margin-top: 22px;
+}
+.sign #leaderboardErrorMsg {
+    margin-top: 0;
 }
 
 /********** Decorations **********/
