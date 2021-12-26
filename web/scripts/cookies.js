@@ -6,7 +6,7 @@
 // Basic save cookie function, without any checks
 function setCookieNoQuestionsAsked(key, data) {
     console.info("Saving cookie named \"" + key + "\"");
-    document.cookie = key + "=" + data + "; SameSite=Strict; " + "max-age=" + (14*24*60*60);
+    document.cookie = key + "=" + data + "; SameSite=lax; " + "max-age=" + (14*24*60*60);
 }
 
 // Save a cookie with the data given, determines if it needs to be broken up or not
