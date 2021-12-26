@@ -1,6 +1,6 @@
 # smol_plugin
 
-[![Build Status](http://jenkins.loudonlune.net/buildStatus/icon?job=smol_plugin)](http://jenkins.loudonlune.net/job/smol_plugin/)
+[![Build Status](http://jenkins.loudonlune.net/job/smol_plugin/badge/icon)](http://jenkins.loudonlune.net/job/smol_plugin/)
 
 A plugin that does many things.
 
