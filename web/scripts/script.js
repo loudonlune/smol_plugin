@@ -56,7 +56,7 @@ function hideTypeList() {
     typeListDiv.style.width = 0;
 }
 function showTypeList() {
-    consoleAction("Showing typelist)");
+    consoleAction("Showing typelist");
     typeListDiv.style.visibility = "visible";
     typeListDiv.style.width = 80 * 4 + "px";
 }
@@ -75,17 +75,25 @@ async function fillDataList(type) {
     typeListInput.value = "";
     typeList.innerHTML = "";
 
-    console.log("Must fetch " + type + "!");
-    var list = await basicGetFetch(getEndpointFromType(type));
-
+    console.log("Must get " + type + "!");
+    var list = JSON.parse(window.localStorage.getItem(type));
     if (list == null) {
-        // Handle if no data is returned
-        showError("typed data not loaded!");
-    } else {
-        list.forEach(el => {
-            addOptionToSelect(typeList, el, el);
-        })
+        // Fall back on fetching from the source
+        list = await basicGetFetch(getEndpointFromType(type));
+
+        // Use the WebStorage API to save the typed list
+        window.localStorage.setItem(type, JSON.stringify(list));
+
+        if (list == null) {
+            // Handle if no data is returned
+            showError("Typed data not loaded!");
+            return;
+        }
     }
+
+    list.forEach(el => {
+        addOptionToSelect(typeList, el, el);
+    });
 }
 
 // Function to make the table for a text-version of the leaderboard
@@ -210,33 +218,39 @@ leaderboardRefreshBtn.onclick = function() {
 
 // Fetches and loads the statistics on the page
 async function loadStatisticsList() {
-    var statistics = await basicGetFetch("/getStatisticsList");
-    // console.log(statistics);
-    
+
+    var statistics = JSON.parse(window.localStorage.getItem("statisticsList"));
     if (statistics == null) {
-        // Handle if something goes wrong (aka no stats)
-        showError("Error: No statistics loaded!")
-    } else {
+        // Fall back on fetching from the source
+        var statistics = await basicGetFetch("/getStatisticsList");
+
+        if (statistics == null) {
+            // Handle if something goes wrong (aka no stats)
+            showError("Error: No statistics loaded!");
+            return;
+        }
+
         // Sort by value (alphabetized)
         statistics.sort((a, b) => (a.statistic > b.statistic) ? 1 : -1);
 
-        // Load elements into dropdown
-        statistics.forEach(el => {
-            // console.log(el);
-            addOptionToSelect(statisticsList, el.statistic, JSON.stringify(el));
-        })
+        // Use the WebStorage API to save the stats list
+        window.localStorage.setItem("statisticsList", JSON.stringify(statistics));
     }
+
+    // Load elements into dropdown
+    statistics.forEach(el => {
+        addOptionToSelect(statisticsList, el.statistic, JSON.stringify(el));
+    })
 }
 
 // After the page first loads
 window.addEventListener("load", function() {
-    clearAllCookies(); // todo remove later eventually
     hideTypeList();
 
     fixMainUrl(); // hack REMEMBER TO UNCOMMENT
 
     // todo add endpoint for mc version
-    // todo check mc version and then invalidate saved cookies if changed so everything will get fetched again
+    // todo check mc version and then invalidate saved storage if changed so everything will get fetched again
 
     loadStatisticsList();
 });

@@ -53,7 +53,7 @@ async function errorCheckResponse(response) {
 //     }
 // } // question: is this actually needed?
 
-//******************** Fetch Functions ********************//
+//******************** Basic Fetch Functions ********************//
 
 // Basic fetch when given a url
 async function basicFetch(url) {
@@ -77,6 +77,8 @@ async function basicFetch(url) {
 async function basicGetFetch(endpoint) {
     return basicFetch(mainUrl + endpoint);
 } // question redundant?
+
+//******************** Endpoint Functions ********************//
 
 // Gets the statistic given only the statistic and no other queries
 async function getUntypedData(stat) {
