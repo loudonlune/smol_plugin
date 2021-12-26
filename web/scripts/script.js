@@ -75,22 +75,8 @@ async function fillDataList(type) {
     typeListInput.value = "";
     typeList.innerHTML = "";
 
-    console.info("Must load " + type + " list!");
-
-    var list = getCookie(type);
-    if (list != null) {
-        consoleAction("Got " + type + " data from cookie!");
-        list = JSON.parse(list);
-    } else {
-        list = await basicGetFetch(getEndpointFromType(type));
-
-        if (list == null) {
-            showError("No typed data loaded!");
-            return;
-        } else {
-            setCookie(type, JSON.stringify(list));
-        }
-    }
+    console.log("Must fetch " + type + "!");
+    var list = await basicGetFetch(getEndpointFromType(type));
 
     if (list == null) {
         // Handle if no data is returned
@@ -224,32 +210,27 @@ leaderboardRefreshBtn.onclick = function() {
 
 // Fetches and loads the statistics on the page
 async function loadStatisticsList() {
-    var statistics = getCookie("statisticsList");
-    if (statistics != null) {
-        consoleAction("Got statisticsList from cookie!");
-        statistics = JSON.parse(statistics);
+    var statistics = await basicGetFetch("/getStatisticsList");
+    // console.log(statistics);
+    
+    if (statistics == null) {
+        // Handle if something goes wrong (aka no stats)
+        showError("Error: No statistics loaded!")
     } else {
-        statistics = await basicGetFetch("/getStatisticsList");
+        // Sort by value (alphabetized)
+        statistics.sort((a, b) => (a.statistic > b.statistic) ? 1 : -1);
 
-        if (statistics == null) {
-            showError("No statistics loaded!");
-            return;
-        } else {
-            // Sort by value (alphabetized)
-            statistics.sort((a, b) => (a.statistic > b.statistic) ? 1 : -1);
-
-            setCookie("statisticsList", JSON.stringify(statistics));
-        }
+        // Load elements into dropdown
+        statistics.forEach(el => {
+            // console.log(el);
+            addOptionToSelect(statisticsList, el.statistic, JSON.stringify(el));
+        })
     }
-
-    // Load elements into dropdown
-    statistics.forEach(el => {
-        addOptionToSelect(statisticsList, el.statistic, JSON.stringify(el));
-    })
 }
 
 // After the page first loads
-window.addEventListener("load", function() { 
+window.addEventListener("load", function() {
+    clearAllCookies(); // todo remove later eventually
     hideTypeList();
 
     fixMainUrl(); // hack REMEMBER TO UNCOMMENT
