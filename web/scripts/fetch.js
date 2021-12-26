@@ -61,7 +61,7 @@ async function basicFetch(url) {
     leaderboardErrorMsg.innerHTML = "";
 
     consoleAction("Fetching from: ", url);
-    let response = await fetch(url, { method: 'GET' })
+    let response = await fetch(url, { method: 'GET', credentials: 'omit' })
         .catch(error => {
             console.log(error); // question redundant?
             showError(error);
